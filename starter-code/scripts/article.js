@@ -2,7 +2,7 @@
 
 var articles = [];
 
-function Article (rawDataObj) {
+function Article(rawDataObj) {
   this.author = rawDataObj.author;
   this.authorUrl = rawDataObj.authorUrl;
   this.title = rawDataObj.title;
@@ -11,10 +11,10 @@ function Article (rawDataObj) {
   this.publishedOn = rawDataObj.publishedOn;
 }
 
-Article.prototype.toHtml = function() {
+Article.prototype.toHtml = function () {
   var template = Handlebars.compile($('#article-template').text());
 
-  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
+  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000);
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
 
   // TODO (stretch goal): Pass the article body into the marked.js library to format our Markdown input!
@@ -22,14 +22,16 @@ Article.prototype.toHtml = function() {
   return template(this);
 };
 
-rawData.sort(function(a,b) {
-  return (new Date(b.publishedOn)) - (new Date(a.publishedOn));
-});
+function populateArticles() {
+  rawData.sort(function (a, b) {
+    return (new Date(b.publishedOn)) - (new Date(a.publishedOn));
+  });
 
-rawData.forEach(function(articleObject) {
-  articles.push(new Article(articleObject));
-})
+  rawData.forEach(function (articleObject) {
+    articles.push(new Article(articleObject));
+  })
 
-articles.forEach(function(article){
-  $('#articles').append(article.toHtml())
-});
+  articles.forEach(function (article) {
+    $('#articles').append(article.toHtml())
+  });
+}
